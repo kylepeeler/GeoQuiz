@@ -12,15 +12,18 @@ import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
 
+    //tag to log
     public static final String TAG = "QuizActivity";
     public static final String KEY_INDEX = "questionIndex";
 
+    //member variables to hold the buttons & text view
     private Button mTrueButton;
     private Button mFalseButton;
     private ImageButton mNextButton;
     private ImageButton mPrevButton;
     private TextView mQuestionTextView;
 
+    //an array to hold the different questions
     private Question[] mQuestionBank = new Question[]{
             new Question(R.string.question_oceans, true),
             new Question(R.string.question_mideast, false),
@@ -31,11 +34,13 @@ public class QuizActivity extends AppCompatActivity {
 
     private int mCurrentIndex = 0;
 
+    //updates the UI based on the member variable mCurrentIndex
     private void updateQuestion(){
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
     }
 
+    //checks if the current question's answer is true or false and displays it in a toast
     private void checkAnswer(boolean userPressedTrue){
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
         int messageResId = 0;
@@ -54,7 +59,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
-
+        //assign a listener to the question view, when clicked go to next question
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mQuestionTextView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -63,7 +68,7 @@ public class QuizActivity extends AppCompatActivity {
                 updateQuestion();
             }
         });
-
+        //assign a listener to the next button
         mTrueButton = (Button) findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +76,7 @@ public class QuizActivity extends AppCompatActivity {
                 checkAnswer(true);
             }
         });
-
+        //assign listener to the false button
         mFalseButton = (Button) findViewById(R.id.false_button);
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +84,7 @@ public class QuizActivity extends AppCompatActivity {
                 checkAnswer(false);
             }
         });
-
+        //assign listener to the next button
         mNextButton = (ImageButton) findViewById(R.id.next_button);
         mNextButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -88,7 +93,7 @@ public class QuizActivity extends AppCompatActivity {
                 updateQuestion();
             }
         });
-
+        //assign listener to the previous button
         mPrevButton = (ImageButton) findViewById(R.id.prev_button);
         mPrevButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -103,11 +108,11 @@ public class QuizActivity extends AppCompatActivity {
                 }
             }
         });
-
+        //check if we should reload the current question state
         if (savedInstanceState != null){
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
         }
-
+        //update the UI
         updateQuestion();
     }
 
